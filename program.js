@@ -1,7 +1,9 @@
 var cells = [];
 var foods = [];
-var NumOfCells = 32;
+var NumOfCells = 30;
 var NumOfFoods = 16;
+var minTimeTilldeath = 244;
+var maxTimeTillDeath = 255
 
 function setup() {
   createCanvas(900, 550);
@@ -21,6 +23,8 @@ function setup() {
   Slider.position(20, 20);
 }
 
+//if mouse is pressed run loop, if not dont run loop
+
 
 //VISUAL UPDATE FUNCTION draws everything to the screen
 function draw() {
@@ -35,6 +39,7 @@ function draw() {
         foods[i].run(foods);
   }
 
+
 //   for (var i = 0; i < NumOfCells; i++) {
 //     collideCirclePoly(Foods.position.x,Foods.position.y,Foods.size,cells[i].position)
 // }
@@ -46,25 +51,39 @@ function draw() {
       if (distBetweenFoodandCell <= (foods[i].size/2 + 12)){
 
         //_size+ast_size*size
-        console.log(distBetweenFoodandCell)
-        foods[i].size = (foods[i].size - 10)
+        console.log(distBetweenFoodandCell);
+        foods[i].size = (foods[i].size - 10);
+        cells[i].timeTillDeath = (cells[i].timeTillDeath + 1000);
       }
-}
-}
-
-var interval = setInterval(Cells.respawn, 1000);
-Cells.prototype.respawn = function() {
-    this.timeTillDeath = this.timeTillDeath - 1;
-
-    if (this.timeTillDeath == 0){
-      for (var i = 0; i < NumOfCells; i++) {
-      new Cells(random(width), random(height));
     }
 }
+
+
+//function that deals with the killing and respawning of cells
+var interval = setInterval(Cells.respawn, 1000);
+Cells.prototype.respawn = function() {
+    //decrease timeTillDeath by 1 every tick
+    this.timeTillDeath = this.timeTillDeath - 0.1;
+  //    cells[i]=new Cells(random(width), random(height));
+
+  //for (var i = cells.length-1; i >= 0; i-- ){
+
 }
 
-//when a food is eaten create another
+Cells.prototype.isDead = function(){
+    if (this.timeTillDeath < 0){
+      fill(255, 0)
+      noStroke()
+      return true;
+    }
+      else {
+        return false;
+      }
+}
 
+
+
+//when a food is eaten create another
 Foods.prototype.respawn = function(){
   for (var i = 0; i < foods.length; i++) {
     if ((foods[i].size) <= (20)){
@@ -107,7 +126,7 @@ function Cells(x, y) {
   this.r = 1.0;
   this.maxspeed = 5;    // Maximum speed
   this.maxforce = 0.05; // Maximum steering force
-  this.timeTillDeath = int(random(60, 80))
+  this.timeTillDeath = int(random(minTimeTilldeath, maxTimeTillDeath))
 }
 
 //run all cells function
@@ -117,6 +136,7 @@ Cells.prototype.run = function(cells) {
   this.borders();
   this.render();
   this.respawn();
+  //this.isDead();
 }
 
 // Forces go into acceleration
@@ -166,13 +186,13 @@ Cells.prototype.seek = function(target) {
 // Draw cell as a hexagon
 Cells.prototype.render = function() {
   //colour of cells
-  fill(204, 204);
-  stroke(10);
+  fill(100, this.timeTillDeath);
+  noStroke();
   polygon(this.position.x, this.position.y, 24, 6);
   //ellipse(this.position.x, this.position.y, 23, 23)
-  textSize(12);
-  fill('red');
-  text(this.timeTillDeath, this.position.x, this.position.y);
+  //textSize(12);
+  //fill('red');
+  //text(this.timeTillDeath, this.position.x, this.position.y);
 }
 
 //function to draw foods as a black hexagon
