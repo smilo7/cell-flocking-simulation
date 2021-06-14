@@ -5,5 +5,7 @@ Simulation experimenting with "boids" like flocking behaviour with various food 
 - Use the slider to change how much cells flock.
 - Experiment to see how flocking effects survival rate of the swarm.
 - Cells go transparent when they are dying.
+- Hexagons are cells.
+- Circles are food.
 
 ![cells screenshot](https://github.com/smilo7/cells/blob/master/cells%20epq.png)
