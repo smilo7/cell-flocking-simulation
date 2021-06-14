@@ -1,3 +1,4 @@
-# cells
-extended project
-experimental flocking and eating sim :)
+# Flocking Cells
+
+Made for EPQ
+Cells display flocking and eating behaviour.
